@@ -14,63 +14,105 @@ export default function Home() {
 
 
   return (
-    <>
-      <div className="container">
-        <div className="flex">
-          <nav className="navbar">
-            <div className="navbar-logo">
-              <h2>Home - {user.displayName}</h2>
+    <div className="min-h-screen bg-gradient-to-br from-dark-900 to-dark-800">
+      <div className="container mx-auto px-6 py-8">
+        {/* Navigation */}
+        <nav className="glass rounded-2xl p-6 mb-8 animate-fade-in">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+                <span className="text-white font-bold text-xl">{user.displayName?.charAt(0)}</span>
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-white">Welcome back</h2>
+                <p className="text-gray-400">{user.displayName}</p>
+              </div>
             </div>
-            <ul className="navbar-links">
-              <li>
-                {!ispending && <button className="oauthButton" onClick={logout}>LogOut</button>}
-                {ispending && <button className="oauthButton" disabled >Loading...</button>}
-              </li>
-              <li>
-                <Link className="oauthButton" to={"/create"}>CreateTask</Link>
-              </li>
-            </ul>
-          </nav>
-
-
-
-          <div className="wrapper">
-            <div className="title">
-              <h2>Users List</h2>
+            
+            <div className="flex items-center space-x-4">
+              <Link 
+                to="/create" 
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-medium btn-glow transition-all duration-300"
+              >
+                Create Task
+              </Link>
+              {!ispending ? (
+                <button 
+                  onClick={logout}
+                  className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-xl font-medium btn-glow transition-all duration-300"
+                >
+                  Logout
+                </button>
+              ) : (
+                <button 
+                  disabled 
+                  className="bg-gray-600 text-white px-6 py-3 rounded-xl font-medium opacity-50 cursor-not-allowed"
+                >
+                  Loading...
+                </button>
+              )}
             </div>
+          </div>
+        </nav>
 
-            {data && data.map((user) => {
+        {/* Users Section */}
+        <div className="glass rounded-2xl p-8 animate-slide-up">
+          <div className="mb-8">
+            <h2 className="text-3xl font-bold text-white mb-2">Team Members</h2>
+            <p className="text-gray-400">Manage your team and track their activity</p>
+          </div>
 
-
-              return (
-                <div key={user.uid} className="card">
-                  <div className="img">
-                    <img src={user.photoUrl} alt="" />
-                  </div>
-                  <div className="content">
-                    <div>
-                      <h3>{user.displayName}</h3>
-                      <p>{user.email}</p>
-                      <p> {user.online ? 'online' : 'offline'} </p>
+          <div className="grid gap-6">
+            {data && data.map((user, index) => (
+              <div 
+                key={user.uid} 
+                className="bg-dark-800 hover:bg-dark-700 rounded-xl p-6 border border-gray-800 hover:border-gray-700 transition-all duration-300 animate-fade-in"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-4">
+                    <div className="relative">
+                      <img 
+                        src={user.photoUrl} 
+                        alt={user.displayName}
+                        className="w-16 h-16 rounded-full border-2 border-gray-700"
+                      />
+                      <div className={`absolute -bottom-1 -right-1 w-5 h-5 rounded-full border-2 border-dark-800 ${
+                        user.online ? 'bg-green-500' : 'bg-gray-500'
+                      }`}></div>
                     </div>
-                     <ul>
-                      {tasks && tasks.map((task) => {
-                   
-                        <li>
-                          <h5>{task.name}nknkkl</h5>
-                        </li>
-                      })}
-                    </ul>
+                    
+                    <div>
+                      <h3 className="text-xl font-semibold text-white">{user.displayName}</h3>
+                      <p className="text-gray-400">{user.email}</p>
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-2 ${
+                        user.online 
+                          ? 'bg-green-900 text-green-300' 
+                          : 'bg-gray-900 text-gray-300'
+                      }`}>
+                        {user.online ? 'Online' : 'Offline'}
+                      </span>
+                    </div>
                   </div>
-                  <div>
-                   
+                  
+                  <div className="text-right">
+                    <div className="text-sm text-gray-400 mb-2">Tasks</div>
+                    {tasks && (
+                      <div className="space-y-1">
+                        {tasks.map((task, taskIndex) => (
+                          <div key={taskIndex} className="text-sm text-blue-400 bg-blue-900/20 px-2 py-1 rounded">
+                            {task.name}
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
-              )
-            })}
+              </div>
+            ))}
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }

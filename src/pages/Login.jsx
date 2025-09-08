@@ -32,77 +32,127 @@ export default function Login() {
   }, [data]);
 
   return (
-    <div className="login">
+    <div className="min-h-screen bg-gradient-to-br from-dark-900 to-dark-800 flex items-center justify-center p-6">
       {!form && (
-        <Form method="post" className="form">
-          <p>
-            Welcome,<span>Login in to continue</span>
-            <NavLink to={"/register"}>Register</NavLink>
-          </p>
-
-          <input type="email" placeholder="Email" name="email" />
-          <input type="password" placeholder="Password" name="password" />
-
-          <div className="separator">
-            <div></div>
-            <span>OR</span>
-            <div></div>
+        <div className="glass rounded-2xl p-8 w-full max-w-md animate-fade-in">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
+            <p className="text-gray-400">Sign in to continue to your account</p>
           </div>
 
-          {!form && (
+          <Form method="post" className="space-y-6">
+            <div>
+              <input 
+                type="email" 
+                placeholder="Email address" 
+                name="email" 
+                className="w-full px-4 py-3 bg-dark-800 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+              />
+            </div>
+            
+            <div>
+              <input 
+                type="password" 
+                placeholder="Password" 
+                name="password" 
+                className="w-full px-4 py-3 bg-dark-800 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+              />
+            </div>
+
+            <div className="flex items-center justify-center">
+              <div className="flex-1 h-px bg-gray-700"></div>
+              <span className="px-4 text-gray-400 text-sm">OR</span>
+              <div className="flex-1 h-px bg-gray-700"></div>
+            </div>
+
             <button
-              className="oauthButton"
               type="button"
               onClick={() => setForm(!form)}
+              className="w-full text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors duration-300"
             >
-              Forget password
+              Forgot your password?
             </button>
-          )}
 
-          <button className="oauthButton" type="button">
-            <FcGoogle size={24} />
-            Continue with Google
-          </button>
+            <div className="space-y-3">
+              <button 
+                type="button"
+                className="w-full flex items-center justify-center space-x-3 bg-white hover:bg-gray-100 text-gray-900 px-4 py-3 rounded-xl font-medium transition-all duration-300 btn-glow"
+              >
+                <FcGoogle size={20} />
+                <span>Continue with Google</span>
+              </button>
 
-          <button className="oauthButton" type="button">
-            <FaGithub size={24} />
-            Continue with Github
-          </button>
+              <button 
+                type="button"
+                className="w-full flex items-center justify-center space-x-3 bg-gray-800 hover:bg-gray-700 text-white px-4 py-3 rounded-xl font-medium transition-all duration-300 btn-glow"
+              >
+                <FaGithub size={20} />
+                <span>Continue with GitHub</span>
+              </button>
+            </div>
 
-          {!isPending && (
-            <button className="oauthButton">
-              Continue
-              <FaAngleDoubleRight size={18} />
-            </button>
-          )}
+            {!isPending ? (
+              <button 
+                type="submit"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-xl font-medium btn-glow transition-all duration-300 flex items-center justify-center space-x-2"
+              >
+                <span>Sign In</span>
+                <FaAngleDoubleRight size={16} />
+              </button>
+            ) : (
+              <button 
+                disabled
+                className="w-full bg-gray-600 text-white px-4 py-3 rounded-xl font-medium opacity-50 cursor-not-allowed"
+              >
+                Loading...
+              </button>
+            )}
+          </Form>
 
-          {isPending && (
-            <button className="oauthButton" disabled>
-              Loading...
-            </button>
-          )}
-        </Form>
+          <div className="mt-8 text-center">
+            <p className="text-gray-400">
+              Don't have an account?{' '}
+              <NavLink to="/register" className="text-blue-400 hover:text-blue-300 font-medium transition-colors duration-300">
+                Sign up
+              </NavLink>
+            </p>
+          </div>
+        </div>
       )}
 
       {form && (
-        <Form method="post" className="form">
-          <p>
-            Welcome,<span>Password Recovery</span>
-          </p>
+        <div className="glass rounded-2xl p-8 w-full max-w-md animate-fade-in">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold text-white mb-2">Reset Password</h1>
+            <p className="text-gray-400">Enter your email to receive reset instructions</p>
+          </div>
 
-          <input type="email" placeholder="Email" name="emailRecovery" />
-          <button className="oauthButton">Send</button>
-
-          {form && (
+          <Form method="post" className="space-y-6">
+            <div>
+              <input 
+                type="email" 
+                placeholder="Email address" 
+                name="emailRecovery" 
+                className="w-full px-4 py-3 bg-dark-800 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+              />
+            </div>
+            
+            <button 
+              type="submit"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-xl font-medium btn-glow transition-all duration-300"
+            >
+              Send Reset Link
+            </button>
+            
             <button
-              className="oauthButton"
               type="button"
               onClick={() => setForm(!form)}
+              className="w-full text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors duration-300"
             >
-              Show login
+              Back to Sign In
             </button>
-          )}
-        </Form>
+          </Form>
+        </div>
       )}
     </div>
   );
