@@ -35,104 +35,157 @@ export default function Login() {
   }, [data]);
 
   const inputClass =
-    "px-5 py-3 rounded-xl bg-neutral-800 text-white placeholder-gray-400 border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300";
+    "w-full px-6 py-4 glass rounded-2xl text-white placeholder-gray-400 border border-white/20 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300";
 
   const buttonClass =
-    "w-full py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all duration-300";
+    "w-full py-4 rounded-2xl font-semibold flex items-center justify-center gap-3 transition-all duration-300 hover:scale-105 shadow-lg";
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black px-4">
-      {!recoveryMode ? (
-        <Form
-          method="post"
-          className="w-full max-w-md bg-neutral-900 p-8 rounded-3xl shadow-2xl flex flex-col gap-6"
-        >
-          {/* Header */}
-          <p className="text-center text-gray-300 text-sm mb-4">
-            Welcome back!{" "}
-            <span className="text-white font-semibold">Sign in to your account</span>
-          </p>
+    <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden">
+      {/* Animated background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900"></div>
+      <div className="absolute inset-0">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse"></div>
+        <div className="absolute top-3/4 right-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse delay-1000"></div>
+        <div className="absolute bottom-1/4 left-1/2 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse delay-2000"></div>
+      </div>
 
-          {/* Inputs */}
-          <input type="email" name="email" placeholder="Email" className={inputClass} />
-          <input type="password" name="password" placeholder="Password" className={inputClass} />
+      <div className="relative z-10 w-full max-w-md">
+        {!recoveryMode ? (
+          <Form
+            method="post"
+            className="glass rounded-3xl p-8 shadow-2xl space-y-6 backdrop-blur-xl border border-white/20"
+          >
+            {/* Header */}
+            <div className="text-center mb-8">
+              <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                <span className="text-3xl font-bold">T</span>
+              </div>
+              <h1 className="text-3xl font-bold gradient-text mb-2">Welcome Back</h1>
+              <p className="text-gray-300">Sign in to continue to TaskFlow</p>
+            </div>
 
-          {/* Forgot / Register */}
-          <div className="flex justify-between items-center text-sm text-gray-400 mb-2">
+            {/* Inputs */}
+            <div className="space-y-4">
+              <input 
+                type="email" 
+                name="email" 
+                placeholder="✉️ Email address" 
+                className={inputClass} 
+              />
+              <input 
+                type="password" 
+                name="password" 
+                placeholder="🔒 Password" 
+                className={inputClass} 
+              />
+            </div>
+
+            {/* Forgot / Register */}
+            <div className="flex justify-between items-center text-sm">
+              <button
+                type="button"
+                onClick={() => setRecoveryMode(true)}
+                className="text-purple-300 hover:text-purple-200 transition-colors"
+              >
+                Forgot password?
+              </button>
+              <NavLink
+                to="/register"
+                className="glass px-4 py-2 rounded-full text-purple-300 hover:text-white transition-all duration-300 border border-purple-500/30"
+              >
+                Create account
+              </NavLink>
+            </div>
+
+            {/* Continue Button */}
+            <button
+              type="submit"
+              disabled={isPending}
+              className={`${buttonClass} bg-gradient-to-r from-purple-500 to-pink-500 text-white glow ${
+                isPending ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+            >
+              {isPending ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  Signing in...
+                </>
+              ) : (
+                <>
+                  Continue
+                  <FaAngleDoubleRight size={20} />
+                </>
+              )}
+            </button>
+
+            {/* Or Separator */}
+            <div className="flex items-center gap-4 my-6">
+              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+              <span className="text-gray-400 text-sm font-medium">or</span>
+              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+            </div>
+
+            {/* Google Login */}
+            <button
+              onClick={googleLogin}
+              disabled={_isPending}
+              type="button"
+              className={`${buttonClass} glass border border-white/20 text-white hover:bg-white/10 ${
+                _isPending ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+            >
+              {_isPending ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  Loading...
+                </>
+              ) : (
+                <>
+                  <FcGoogle size={24} />
+                  Continue with Google
+                </>
+              )}
+            </button>
+          </Form>
+        ) : (
+          // Password Recovery
+          <Form
+            method="post"
+            className="glass rounded-3xl p-8 shadow-2xl space-y-6 backdrop-blur-xl border border-white/20"
+          >
+            <div className="text-center mb-8">
+              <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                <span className="text-3xl">🔑</span>
+              </div>
+              <h1 className="text-3xl font-bold gradient-text mb-2">Reset Password</h1>
+              <p className="text-gray-300">Enter your email to receive a reset link</p>
+            </div>
+
+            <input
+              type="email"
+              placeholder="✉️ Enter your email"
+              name="emailRecovery"
+              className={inputClass}
+            />
+
+            <button
+              type="submit"
+              className={`${buttonClass} bg-gradient-to-r from-blue-500 to-purple-500 text-white glow`}
+            >
+              Send Recovery Link
+            </button>
+
             <button
               type="button"
-              onClick={() => setRecoveryMode(true)}
-              className="hover:text-white transition-colors"
+              onClick={() => setRecoveryMode(false)}
+              className={`${buttonClass} glass border border-white/20 text-gray-300 hover:text-white hover:bg-white/10`}
             >
-              Forgot password?
+              ← Back to Login
             </button>
-            <NavLink
-              to="/register"
-              className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-3 py-1 rounded-full shadow-lg hover:scale-105 hover:shadow-xl transition-transform duration-300"
-            >
-              Register
-            </NavLink>
-          </div>
-
-          {/* Continue Button */}
-          <button
-            type="submit"
-            className={`${buttonClass} bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:scale-105 hover:shadow-lg`}
-          >
-            {isPending ? "Signing in..." : "Continue"}
-            <FaAngleDoubleRight size={20} />
-          </button>
-
-          {/* Or Separator */}
-          <div className="flex items-center gap-3 my-4">
-            <div className="flex-1 h-px bg-neutral-700"></div>
-            <span className="text-gray-400 text-xs uppercase">or</span>
-            <div className="flex-1 h-px bg-neutral-700"></div>
-          </div>
-
-          {/* Google Login */}
-          <button
-            onClick={googleLogin}
-            disabled={_isPending}
-            className={`${buttonClass} bg-white text-black hover:bg-gray-200 shadow-md hover:shadow-lg`}
-          >
-            {_isPending ? "Loading..." : "Sign in with Google"}
-            <FcGoogle size={22} />
-          </button>
-        </Form>
-      ) : (
-        // Password Recovery
-        <Form
-          method="post"
-          className="w-full max-w-md bg-neutral-900 p-8 rounded-3xl shadow-2xl flex flex-col gap-4"
-        >
-          <p className="text-center text-gray-300 text-sm mb-4">
-            Password Recovery
-          </p>
-
-          <input
-            type="email"
-            placeholder="Enter your email"
-            name="emailRecovery"
-            className={inputClass}
-          />
-
-          <button
-            type="submit"
-            className={`${buttonClass} bg-blue-600 text-white hover:bg-blue-500`}
-          >
-            Send Recovery Link
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setRecoveryMode(false)}
-            className={`${buttonClass} bg-neutral-800 text-gray-300 hover:bg-neutral-700 hover:text-white`}
-          >
-            Back to Login
-          </button>
-        </Form>
-      )}
+          </Form>
+        )}
+      </div>
     </div>
   );
 }
