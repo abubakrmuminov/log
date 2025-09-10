@@ -6,46 +6,40 @@ import { Link } from "react-router-dom";
 export default function Home() {
   const { ispending, logout } = useLogOut();
   const { user } = useSelector((store) => store.user);
-  const { data } = useCollection("users");
+  const { data: users } = useCollection("users");
   const { data: tasks } = useCollection("tasks");
-  console.log(tasks);
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col">
       {/* Navbar */}
-      <nav className="flex items-center justify-between bg-neutral-900 px-6 py-4 shadow-md">
-        <div className="text-xl font-bold">Home - {user.displayName}</div>
+      <nav className="flex items-center justify-between bg-neutral-900 px-6 py-4 shadow-lg">
+        <div className="text-2xl font-bold">Welcome, {user.displayName}</div>
         <ul className="flex gap-4">
           <li>
-            {!ispending && (
-              <button
-                className="px-4 py-2 rounded-lg bg-white text-black font-medium hover:bg-gray-200 transition"
-                onClick={logout}
-              >
-                LogOut
-              </button>
-            )}
-            {ispending && (
-              <button
-                className="px-4 py-2 rounded-lg bg-gray-600 text-gray-300"
-                disabled
-              >
-                Loading...
-              </button>
-            )}
+            <button
+              onClick={logout}
+              disabled={ispending}
+              className={`px-4 py-2 rounded-xl font-medium transition ${
+                ispending
+                  ? "bg-gray-600 text-gray-300 cursor-not-allowed"
+                  : "bg-white text-black hover:bg-gray-200"
+              }`}
+            >
+              {ispending ? "Logging out..." : "LogOut"}
+            </button>
           </li>
           <li>
             <Link
-              to={"/create"}
-              className="px-4 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 transition"
+              to="/create"
+              className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 transition font-medium"
             >
               Create Task
             </Link>
           </li>
           <li>
             <Link
-              to={"/profile"}
-              className="px-4 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 transition"
+              to="/profile"
+              className="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 transition font-medium"
             >
               Profile
             </Link>
@@ -53,49 +47,81 @@ export default function Home() {
         </ul>
       </nav>
 
-      {/* Wrapper */}
-      <div className="flex-1 p-6">
-        <div className="mb-6">
-          <h2 className="text-2xl font-semibold">Users List</h2>
-        </div>
+      {/* Main Content */}
+      <div className="flex-1 p-6 space-y-12">
+        {/* Users Section */}
+        <section>
+          <h2 className="text-2xl font-semibold mb-6">Users</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {users &&
+              users.map((u) => (
+                <Link
+                  key={u.uid}
+                  to={`/user/${u.uid}`}
+                  className="bg-neutral-900 rounded-2xl shadow-xl p-4 flex gap-4 hover:bg-neutral-800 transition transform hover:scale-105"
+                >
+                  <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-neutral-700 flex-shrink-0">
+                    <img
+                      src={
+                        u.photoUrl ||
+                        `https://api.dicebear.com/7.x/adventurer/svg?seed=${u.uid}`
+                      }
+                      alt={u.displayName}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="flex-1 flex flex-col justify-between">
+                    <div>
+                      <h3 className="font-semibold text-lg">{u.displayName}</h3>
+                      <p className="text-sm text-gray-400">{u.email}</p>
+                    </div>
+                    <p
+                      className={`text-sm mt-2 ${
+                        u.online ? "text-green-400" : "text-red-400"
+                      } font-medium`}
+                    >
+                      {u.online ? "Online" : "Offline"}
+                    </p>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {data &&
-            data.map((user) => (
-              <div
-                key={user.uid}
-                className="bg-neutral-900 rounded-xl shadow-md p-4 flex items-center gap-4"
-              >
-                <div className="w-16 h-16 rounded-full overflow-hidden border border-neutral-700">
-                  <img
-                    src={user.photoUrl}
-                    alt={user.displayName}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold">{user.displayName}</h3>
-                  <p className="text-sm text-gray-400">{user.email}</p>
-                  <p
-                    className={`text-sm ${
-                      user.online ? "text-green-400" : "text-red-400"
-                    }`}
-                  >
-                    {user.online ? "online" : "offline"}
+                    {/* Tasks for this user */}
+                    <ul className="mt-2 space-y-1 text-xs text-gray-300">
+                      {tasks
+                        ?.filter((t) => t.createdBy === u.uid)
+                        .map((t) => (
+                          <li key={t.id}>{t.name}</li>
+                        ))}
+                    </ul>
+                  </div>
+                </Link>
+              ))}
+          </div>
+        </section>
+
+        {/* Tasks Section */}
+        <section>
+          <h2 className="text-2xl font-semibold mb-6">All Tasks</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {tasks &&
+              tasks.map((task) => (
+                <Link
+                  key={task.uid}
+                  to={`/task/${task.uid}`}
+                  className="bg-neutral-900 rounded-2xl shadow-xl p-4 hover:bg-neutral-800 transition transform hover:scale-105"
+                >
+                  <h3 className="font-semibold text-lg">{task.name}</h3>
+                  <p className="text-sm text-gray-400">
+                    {task.description || "No description"}
                   </p>
-                  <ul className="mt-2 space-y-1">
-                    {tasks &&
-                      tasks.map((task) => (
-                        <li key={task.id} className="text-xs text-gray-300">
-                          {task.name}
-                        </li>
-                      ))}
-                  </ul>
-                </div>
-              </div>
-            ))}
-        </div>
+                </Link>
+              ))}
+          </div>
+        </section>
       </div>
     </div>
   );
 }
+
+
+
+
+

@@ -17,6 +17,8 @@ import { isAuthReady, login } from "./app/Auth/AuthSlice";
 import { auth } from "./firebase/config";
 import CreateTask from "./pages/CreateTask";
 import Profile from "./pages/Profile";
+import TaskDetails from "./pages/TaskDetail";
+import UserInfo from "./pages/UserInfo";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -55,6 +57,12 @@ export default function App() {
       path: "/profile",
       element: <Profile></Profile>,
     },
+    {
+      path: "/task/:id",
+      element: <TaskDetails></TaskDetails>,
+    },
+    {path: "user/:id", element: <UserInfo></UserInfo>}
+
   ]);
 
   useEffect(() => {

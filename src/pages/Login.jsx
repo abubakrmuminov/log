@@ -1,29 +1,32 @@
 import { Form, NavLink, useActionData } from "react-router-dom";
-import useLogin from "../hook/useLogin";
 import { useEffect, useState } from "react";
-import { formError } from "../components/ErrorId";
 import { FcGoogle } from "react-icons/fc";
-import { FaAngleDoubleRight, FaGithub } from "react-icons/fa";
-import { useResetPassword } from "../hook/useResetPassword";
+import { FaAngleDoubleRight } from "react-icons/fa";
 
-// 🔥 action shu yerda
+import useLogin from "../hook/useLogin";
+import { useResetPassword } from "../hook/useResetPassword";
+import { useGoogle } from "../hook/useGoogle";
+import { formError } from "../components/ErrorId";
+
+// Обработка данных формы
 export async function action({ request }) {
   const formData = await request.formData();
-  const data = Object.fromEntries(formData);
-  return data;
+  return Object.fromEntries(formData);
 }
 
 export default function Login() {
   const data = useActionData();
+  const [recoveryMode, setRecoveryMode] = useState(false);
+
   const { login, isPending } = useLogin();
   const { resetPassword } = useResetPassword();
-  const [form, setForm] = useState(false);
+  const { googleLogin, _isPending } = useGoogle();
 
   useEffect(() => {
     if (data?.email && data?.password) {
       login(data.email, data.password);
-    } else {
-      data ? formError() : false;
+    } else if (data) {
+      formError();
     }
 
     if (data?.emailRecovery) {
@@ -31,114 +34,102 @@ export default function Login() {
     }
   }, [data]);
 
+  const inputClass =
+    "px-5 py-3 rounded-xl bg-neutral-800 text-white placeholder-gray-400 border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300";
+
+  const buttonClass =
+    "w-full py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all duration-300";
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-black px-4">
-      {!form && (
+      {!recoveryMode ? (
         <Form
           method="post"
-          className="w-full max-w-md bg-neutral-900 p-8 rounded-2xl shadow-lg flex flex-col gap-4"
+          className="w-full max-w-md bg-neutral-900 p-8 rounded-3xl shadow-2xl flex flex-col gap-6"
         >
+          {/* Header */}
           <p className="text-center text-gray-300 text-sm mb-4">
-            Welcome,{" "}
-            <span className="text-white font-medium">Login to continue</span>{" "}
-            <NavLink to={"/register"} className="text-blue-400 hover:underline">
-              Register
-            </NavLink>
+            Welcome back!{" "}
+            <span className="text-white font-semibold">Sign in to your account</span>
           </p>
 
-          <input
-            type="email"
-            placeholder="Email"
-            name="email"
-            className="px-4 py-2 rounded-lg bg-neutral-800 text-white placeholder-gray-500 border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            name="password"
-            className="px-4 py-2 rounded-lg bg-neutral-800 text-white placeholder-gray-500 border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
-          />
+          {/* Inputs */}
+          <input type="email" name="email" placeholder="Email" className={inputClass} />
+          <input type="password" name="password" placeholder="Password" className={inputClass} />
 
-          {/* Separator */}
-          <div className="flex items-center gap-2 my-2">
+          {/* Forgot / Register */}
+          <div className="flex justify-between items-center text-sm text-gray-400 mb-2">
+            <button
+              type="button"
+              onClick={() => setRecoveryMode(true)}
+              className="hover:text-white transition-colors"
+            >
+              Forgot password?
+            </button>
+            <NavLink
+              to="/register"
+              className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-3 py-1 rounded-full shadow-lg hover:scale-105 hover:shadow-xl transition-transform duration-300"
+            >
+              Register
+            </NavLink>
+          </div>
+
+          {/* Continue Button */}
+          <button
+            type="submit"
+            className={`${buttonClass} bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:scale-105 hover:shadow-lg`}
+          >
+            {isPending ? "Signing in..." : "Continue"}
+            <FaAngleDoubleRight size={20} />
+          </button>
+
+          {/* Or Separator */}
+          <div className="flex items-center gap-3 my-4">
             <div className="flex-1 h-px bg-neutral-700"></div>
-            <span className="text-gray-400 text-xs">OR</span>
+            <span className="text-gray-400 text-xs uppercase">or</span>
             <div className="flex-1 h-px bg-neutral-700"></div>
           </div>
 
-          {/* Forget Password */}
+          {/* Google Login */}
           <button
-            type="button"
-            onClick={() => setForm(!form)}
-            className="w-full py-2 bg-neutral-800 text-gray-300 rounded-lg hover:bg-neutral-700 transition"
+            onClick={googleLogin}
+            disabled={_isPending}
+            className={`${buttonClass} bg-white text-black hover:bg-gray-200 shadow-md hover:shadow-lg`}
           >
-            Forget password
+            {_isPending ? "Loading..." : "Sign in with Google"}
+            <FcGoogle size={22} />
           </button>
-
-          {/* Google */}
-          <button
-            type="button"
-            className="w-full flex items-center justify-center gap-2 py-2 bg-white text-black font-medium rounded-lg hover:bg-gray-200 transition"
-          >
-            <FcGoogle size={20} /> Continue with Google
-          </button>
-
-          {/* Github */}
-          <button
-            type="button"
-            className="w-full flex items-center justify-center gap-2 py-2 bg-neutral-800 text-white rounded-lg hover:bg-neutral-700 transition"
-          >
-            <FaGithub size={20} /> Continue with Github
-          </button>
-
-          {/* Continue */}
-          {!isPending && (
-            <button
-              className="w-full flex items-center justify-center gap-2 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition"
-            >
-              Continue <FaAngleDoubleRight size={18} />
-            </button>
-          )}
-
-          {isPending && (
-            <button
-              className="w-full py-2 bg-gray-600 text-gray-300 rounded-lg"
-              disabled
-            >
-              Loading...
-            </button>
-          )}
         </Form>
-      )}
-
-      {/* Password Recovery */}
-      {form && (
+      ) : (
+        // Password Recovery
         <Form
           method="post"
-          className="w-full max-w-md bg-neutral-900 p-8 rounded-2xl shadow-lg flex flex-col gap-4"
+          className="w-full max-w-md bg-neutral-900 p-8 rounded-3xl shadow-2xl flex flex-col gap-4"
         >
           <p className="text-center text-gray-300 text-sm mb-4">
-            Welcome,{" "}
-            <span className="text-white font-medium">Password Recovery</span>
+            Password Recovery
           </p>
 
           <input
             type="email"
-            placeholder="Email"
+            placeholder="Enter your email"
             name="emailRecovery"
-            className="px-4 py-2 rounded-lg bg-neutral-800 text-white placeholder-gray-500 border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
+            className={inputClass}
           />
 
-          <button className="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition">
-            Send
+          <button
+            type="submit"
+            className={`${buttonClass} bg-blue-600 text-white hover:bg-blue-500`}
+          >
+            Send Recovery Link
           </button>
 
           <button
             type="button"
-            onClick={() => setForm(!form)}
-            className="w-full py-2 bg-neutral-800 text-gray-300 rounded-lg hover:bg-neutral-700 transition"
+            onClick={() => setRecoveryMode(false)}
+            className={`${buttonClass} bg-neutral-800 text-gray-300 hover:bg-neutral-700 hover:text-white`}
           >
-            Show login
+            Back to Login
           </button>
         </Form>
       )}

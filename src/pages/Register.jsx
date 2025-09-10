@@ -1,13 +1,12 @@
 import { Form, NavLink, useActionData } from "react-router-dom";
 import { useRegister } from "../hook/useRegister";
 import { useEffect } from "react";
-import { formError } from "../components/ErrorId";
 import { FaAngleDoubleRight } from "react-icons/fa";
+import { formError } from "../components/ErrorId";
 
 export async function action({ request }) {
   const formData = await request.formData();
-  const data = Object.fromEntries(formData);
-  return data;
+  return Object.fromEntries(formData);
 }
 
 export default function Register() {
@@ -17,58 +16,61 @@ export default function Register() {
   useEffect(() => {
     if (data?.name && data?.email && data?.password) {
       register(data.name, data.email, data.password);
-    } else {
-      data ? formError(data) : false;
+    } else if (data) {
+      formError(data);
     }
   }, [data]);
+
+  const inputClass =
+    "px-5 py-3 rounded-xl bg-neutral-800 text-white placeholder-gray-400 border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300";
+
+  const buttonClass =
+    "w-full py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all duration-300";
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black px-4">
       <Form
         method="post"
-        className="w-full max-w-md bg-neutral-900 p-8 rounded-2xl shadow-lg flex flex-col gap-4"
+        className="w-full max-w-md bg-neutral-900 p-8 rounded-3xl shadow-2xl flex flex-col gap-6"
       >
+        {/* Header */}
         <p className="text-center text-gray-300 text-sm mb-4">
-          Welcome to{" "}
-          <span className="text-white font-medium">Register to continue</span>{" "}
-          <NavLink to={"/login"} className="text-blue-400 hover:underline">
-            Login
-          </NavLink>
+          Create your account{" "}
+          <span className="text-white font-semibold">Register now</span>
         </p>
 
-        <input
-          type="text"
-          placeholder="Enter Your Name"
-          name="name"
-          className="px-4 py-2 rounded-lg bg-neutral-800 text-white placeholder-gray-500 border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
-        />
-        <input
-          type="email"
-          placeholder="Enter Your Email"
-          name="email"
-          className="px-4 py-2 rounded-lg bg-neutral-800 text-white placeholder-gray-500 border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
-        />
-        <input
-          type="password"
-          placeholder="Enter Your Password"
-          name="password"
-          className="px-4 py-2 rounded-lg bg-neutral-800 text-white placeholder-gray-500 border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
-        />
+        {/* Inputs */}
+        <input type="text" name="name" placeholder="Your Name" className={inputClass} />
+        <input type="email" name="email" placeholder="Your Email" className={inputClass} />
+        <input type="password" name="password" placeholder="Password" className={inputClass} />
 
-        {!isPending && (
-          <button className="w-full flex items-center justify-center gap-2 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition">
-            Continue <FaAngleDoubleRight size={18} />
+        {/* Continue / Loading */}
+        {!isPending ? (
+          <button
+            type="submit"
+            className={`${buttonClass} bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:scale-105 hover:shadow-lg`}
+          >
+            Continue <FaAngleDoubleRight size={20} />
           </button>
-        )}
-
-        {isPending && (
+        ) : (
           <button
             disabled
-            className="w-full py-2 bg-gray-600 text-gray-300 rounded-lg"
+            className={`${buttonClass} bg-gray-600 text-gray-300`}
           >
             Loading...
           </button>
         )}
+
+        {/* Link to Login */}
+        <p className="text-center text-gray-400 text-sm mt-2">
+          Already have an account?{" "}
+          <NavLink
+            to="/login"
+            className="text-blue-400 hover:underline font-medium"
+          >
+            Login
+          </NavLink>
+        </p>
       </Form>
     </div>
   );
