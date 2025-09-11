@@ -39,7 +39,7 @@ function CreateTask() {
         await addDoc(collection(db, "task"), {
             ...task,
         }).then(() => {
-            alert("Qoshildi")
+            alert("Mission Created Successfully! 🚀")
             navigate('/')
         })
     }
@@ -47,43 +47,51 @@ function CreateTask() {
     const customSelectStyles = {
         control: (base) => ({
             ...base,
-            backgroundColor: "rgba(255, 255, 255, 0.1)",
-            backdropFilter: "blur(20px)",
-            borderColor: "rgba(255, 255, 255, 0.2)",
+            backgroundColor: "rgba(15, 23, 42, 0.4)",
+            backdropFilter: "blur(25px)",
+            borderColor: "rgba(16, 185, 129, 0.3)",
             borderRadius: "16px",
-            padding: "8px",
+            padding: "12px",
             color: "white",
-            boxShadow: "none",
+            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
+            fontSize: "18px",
+            fontWeight: "500",
             "&:hover": {
-                borderColor: "rgba(147, 51, 234, 0.5)",
+                borderColor: "rgba(16, 185, 129, 0.5)",
+                boxShadow: "0 0 20px rgba(16, 185, 129, 0.3)",
             }
         }),
         menu: (base) => ({
             ...base,
-            backgroundColor: "rgba(30, 30, 30, 0.95)",
-            backdropFilter: "blur(20px)",
-            borderRadius: "16px",
-            border: "1px solid rgba(255, 255, 255, 0.1)",
+            backgroundColor: "rgba(15, 23, 42, 0.95)",
+            backdropFilter: "blur(25px)",
+            borderRadius: "20px",
+            border: "1px solid rgba(16, 185, 129, 0.3)",
             color: "white",
+            boxShadow: "0 20px 40px rgba(0, 0, 0, 0.4)",
         }),
         option: (base, state) => ({
             ...base,
             backgroundColor: state.isFocused 
-                ? "rgba(147, 51, 234, 0.2)" 
+                ? "rgba(16, 185, 129, 0.2)" 
                 : "transparent",
             color: "white",
+            fontSize: "16px",
+            fontWeight: "500",
             "&:hover": {
-                backgroundColor: "rgba(147, 51, 234, 0.3)",
+                backgroundColor: "rgba(16, 185, 129, 0.3)",
             }
         }),
         multiValue: (base) => ({
             ...base,
-            backgroundColor: "rgba(147, 51, 234, 0.3)",
-            borderRadius: "8px",
+            backgroundColor: "rgba(16, 185, 129, 0.3)",
+            borderRadius: "12px",
+            border: "1px solid rgba(16, 185, 129, 0.5)",
         }),
         multiValueLabel: (base) => ({
             ...base,
             color: "white",
+            fontWeight: "600",
         }),
         multiValueRemove: (base) => ({
             ...base,
@@ -96,6 +104,7 @@ function CreateTask() {
         singleValue: (base) => ({
             ...base,
             color: "white",
+            fontWeight: "500",
         }),
         input: (base) => ({
             ...base,
@@ -103,105 +112,136 @@ function CreateTask() {
         }),
         placeholder: (base) => ({
             ...base,
-            color: "rgba(255, 255, 255, 0.5)",
+            color: "rgba(148, 163, 184, 0.7)",
+            fontSize: "16px",
         }),
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden">
-            {/* Animated background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900"></div>
+        <div className="min-h-screen flex items-center justify-center px-6 relative overflow-hidden">
+            {/* Enhanced animated background */}
             <div className="absolute inset-0">
-                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse"></div>
-                <div className="absolute top-3/4 right-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse delay-1000"></div>
-                <div className="absolute bottom-1/4 left-1/2 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse delay-2000"></div>
+                <div className="absolute top-20 left-20 w-96 h-96 bg-gradient-to-r from-amber-400/30 to-orange-500/30 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+                <div className="absolute top-1/2 right-20 w-80 h-80 bg-gradient-to-r from-emerald-400/30 to-teal-500/30 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-1000"></div>
+                <div className="absolute bottom-20 left-1/3 w-72 h-72 bg-gradient-to-r from-violet-400/30 to-purple-500/30 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-2000"></div>
+                <div className="absolute bottom-32 right-32 w-64 h-64 bg-gradient-to-r from-pink-400/30 to-rose-500/30 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-3000"></div>
             </div>
 
-            <div className="relative z-10 w-full max-w-2xl">
+            {/* Floating particles */}
+            <div className="particles">
+                {[...Array(10)].map((_, i) => (
+                    <div
+                        key={i}
+                        className="particle"
+                        style={{
+                            left: `${Math.random() * 100}%`,
+                            animationDelay: `${Math.random() * 8}s`,
+                            animationDuration: `${8 + Math.random() * 4}s`
+                        }}
+                    />
+                ))}
+            </div>
+
+            <div className="relative z-10 w-full max-w-3xl">
                 <form 
                     onSubmit={handleSubmit} 
-                    className="glass rounded-3xl p-8 shadow-2xl space-y-8 backdrop-blur-xl border border-white/20"
+                    className="glass rounded-3xl p-12 shadow-2xl space-y-10 backdrop-blur-xl border border-amber-400/30 glow-gold"
                 >
-                    {/* Header */}
-                    <div className="text-center mb-8">
-                        <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                            <span className="text-3xl">✨</span>
+                    {/* Enhanced Header */}
+                    <div className="text-center mb-12">
+                        <div className="relative inline-block mb-8">
+                            <div className="w-28 h-28 bg-gradient-to-br from-amber-400 via-orange-500 to-amber-600 rounded-3xl flex items-center justify-center mx-auto shadow-2xl glow-gold">
+                                <span className="text-5xl">🚀</span>
+                            </div>
+                            <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full animate-pulse"></div>
                         </div>
-                        <h1 className="text-3xl font-bold gradient-text mb-2">Create New Task</h1>
-                        <p className="text-gray-300">Organize your work and collaborate with your team</p>
+                        <h1 className="text-5xl font-bold gradient-text mb-4">Create New Mission</h1>
+                        <p className="text-xl text-slate-300 font-medium">Launch your next cosmic adventure and collaborate with your stellar team</p>
                     </div>
 
-                    {/* Title */}
-                    <div className="space-y-2">
-                        <label htmlFor="title" className="block text-sm font-semibold text-purple-300">
-                            📝 Task Title
+                    {/* Enhanced Title */}
+                    <div className="space-y-4">
+                        <label htmlFor="title" className="block text-lg font-bold text-amber-300 flex items-center space-x-2">
+                            <span>🎯</span>
+                            <span>Mission Title</span>
                         </label>
                         <input 
                             type="text" 
-                            placeholder="Enter a descriptive task title" 
+                            placeholder="Enter a compelling mission title" 
                             id="title" 
                             name="title"
-                            className="w-full px-6 py-4 glass rounded-2xl text-white placeholder-gray-400 border border-white/20 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300"
+                            className="w-full px-8 py-6 glass rounded-2xl text-white placeholder-slate-400 border border-amber-400/30 input-focus transition-all duration-300 text-lg font-medium"
                         />
                     </div>
 
-                    {/* Description */}
-                    <div className="space-y-2">
-                        <label htmlFor="description" className="block text-sm font-semibold text-purple-300">
-                            📄 Description
+                    {/* Enhanced Description */}
+                    <div className="space-y-4">
+                        <label htmlFor="description" className="block text-lg font-bold text-emerald-300 flex items-center space-x-2">
+                            <span>📋</span>
+                            <span>Mission Briefing</span>
                         </label>
                         <textarea 
                             name="description" 
                             id="description" 
-                            placeholder="Provide detailed information about the task..."
-                            rows={4}
-                            className="w-full px-6 py-4 glass rounded-2xl text-white placeholder-gray-400 border border-white/20 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 resize-none"
+                            placeholder="Provide detailed mission objectives and requirements..."
+                            rows={5}
+                            className="w-full px-8 py-6 glass rounded-2xl text-white placeholder-slate-400 border border-emerald-400/30 input-focus transition-all duration-300 resize-none text-lg font-medium leading-relaxed"
                         ></textarea>
                     </div>
 
-                    {/* Due date */}
-                    <div className="space-y-2">
-                        <label htmlFor="doeto" className="block text-sm font-semibold text-purple-300">
-                            📅 Due Date
+                    {/* Enhanced Due date */}
+                    <div className="space-y-4">
+                        <label htmlFor="doeto" className="block text-lg font-bold text-violet-300 flex items-center space-x-2">
+                            <span>⏰</span>
+                            <span>Mission Deadline</span>
                         </label>
                         <input 
                             type="date" 
                             id="doeto" 
                             name="due-to"
-                            className="w-full px-6 py-4 glass rounded-2xl text-white border border-white/20 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300"
+                            className="w-full px-8 py-6 glass rounded-2xl text-white border border-violet-400/30 input-focus transition-all duration-300 text-lg font-medium"
                         />
                     </div>
 
-                    {/* Users */}
-                    <div className="space-y-2">
-                        <label className="block text-sm font-semibold text-purple-300">
-                            👥 Assign Team Members
+                    {/* Enhanced Users */}
+                    <div className="space-y-4">
+                        <label className="block text-lg font-bold text-pink-300 flex items-center space-x-2">
+                            <span>👥</span>
+                            <span>Assign Crew Members</span>
                         </label>
-                        <Select
-                            isMulti
-                            name="Users"
-                            options={userOptions}
-                            placeholder="Select team members to assign..."
-                            styles={customSelectStyles}
-                            className="text-white"
-                            classNamePrefix="react-select"
-                        />
+                        <div className="relative">
+                            <Select
+                                isMulti
+                                name="Users"
+                                options={userOptions}
+                                placeholder="Select stellar team members for this mission..."
+                                styles={customSelectStyles}
+                                className="text-white"
+                                classNamePrefix="react-select"
+                            />
+                        </div>
                     </div>
 
-                    {/* Buttons */}
-                    <div className="flex gap-4 pt-4">
+                    {/* Enhanced Buttons */}
+                    <div className="flex gap-6 pt-8">
                         <button 
                             type="button"
                             onClick={() => navigate('/')}
-                            className="flex-1 py-4 glass rounded-2xl font-semibold text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-300 border border-white/20"
+                            className="flex-1 py-6 glass rounded-2xl font-bold text-slate-300 hover:text-white hover:bg-slate-500/10 transition-all duration-300 border border-slate-400/30 text-lg"
                         >
-                            Cancel
+                            <span className="flex items-center justify-center space-x-2">
+                                <span>←</span>
+                                <span>Cancel Mission</span>
+                            </span>
                         </button>
                         <button 
                             type="submit" 
-                            className="flex-1 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-2xl hover:scale-105 transition-all duration-300 shadow-lg glow"
+                            className="flex-1 py-6 btn-primary rounded-2xl font-bold hover:scale-105 transition-all duration-300 shadow-2xl glow-gold text-lg"
                         >
-                            ✨ Create Task
+                            <span className="flex items-center justify-center space-x-3">
+                                <span>🚀</span>
+                                <span>Launch Mission</span>
+                            </span>
                         </button>
                     </div>
                 </form>

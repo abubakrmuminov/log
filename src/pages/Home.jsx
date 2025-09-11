@@ -11,92 +11,133 @@ export default function Home() {
 
   return (
     <div className="min-h-screen text-white relative overflow-hidden">
-      {/* Animated background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 opacity-50"></div>
+      {/* Animated background with particles */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
-        <div className="absolute top-3/4 right-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-1000"></div>
-        <div className="absolute bottom-1/4 left-1/2 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-2000"></div>
+        <div className="absolute top-10 left-10 w-72 h-72 bg-gradient-to-r from-amber-400/20 to-orange-500/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+        <div className="absolute top-1/3 right-20 w-96 h-96 bg-gradient-to-r from-emerald-400/20 to-teal-500/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute bottom-20 left-1/3 w-80 h-80 bg-gradient-to-r from-violet-400/20 to-purple-500/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-2000"></div>
+        <div className="absolute bottom-10 right-10 w-64 h-64 bg-gradient-to-r from-pink-400/20 to-rose-500/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-3000"></div>
+      </div>
+
+      {/* Floating particles */}
+      <div className="particles">
+        {[...Array(15)].map((_, i) => (
+          <div
+            key={i}
+            className="particle"
+            style={{
+              left: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 8}s`,
+              animationDuration: `${8 + Math.random() * 4}s`
+            }}
+          />
+        ))}
       </div>
 
       {/* Content */}
       <div className="relative z-10 flex flex-col">
-        {/* Navbar */}
-        <nav className="glass backdrop-blur-xl border-b border-white/10 px-8 py-6 shadow-2xl">
+        {/* Enhanced Navbar */}
+        <nav className="glass backdrop-blur-xl border-b border-amber-400/20 px-8 py-6 shadow-2xl">
           <div className="flex items-center justify-between max-w-7xl mx-auto">
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg">
-                <span className="text-2xl font-bold">T</span>
+            <div className="flex items-center space-x-6">
+              <div className="relative">
+                <div className="w-14 h-14 bg-gradient-to-br from-amber-400 via-orange-500 to-amber-600 rounded-2xl flex items-center justify-center shadow-2xl glow-gold">
+                  <span className="text-2xl font-bold text-slate-900">✨</span>
+                </div>
+                <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full animate-pulse"></div>
               </div>
               <div>
-                <h1 className="text-2xl font-bold gradient-text">TaskFlow</h1>
-                <p className="text-sm text-gray-300">Welcome back, {user.displayName}</p>
+                <h1 className="text-3xl font-bold gradient-text">TaskFlow Pro</h1>
+                <p className="text-sm text-emerald-300 font-medium">Welcome back, {user.displayName}</p>
               </div>
             </div>
             
             <div className="flex items-center space-x-4">
               <Link
                 to="/create"
-                className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl font-semibold hover:scale-105 transition-all duration-300 shadow-lg glow"
+                className="px-8 py-4 btn-primary rounded-2xl font-bold hover:scale-105 transition-all duration-300 shadow-xl glow-gold flex items-center space-x-2"
               >
-                ✨ Create Task
+                <span>✨</span>
+                <span>Create Task</span>
               </Link>
               <Link
                 to="/profile"
-                className="px-6 py-3 glass rounded-xl font-semibold hover:scale-105 transition-all duration-300 border border-white/20"
+                className="px-6 py-4 glass-secondary rounded-2xl font-semibold hover:scale-105 transition-all duration-300 border border-emerald-400/30 text-emerald-300 glow-mint"
               >
-                👤 Profile
+                <span className="flex items-center space-x-2">
+                  <span>👤</span>
+                  <span>Profile</span>
+                </span>
               </Link>
               <button
                 onClick={logout}
                 disabled={ispending}
-                className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                className={`px-6 py-4 rounded-2xl font-semibold transition-all duration-300 ${
                   ispending
-                    ? "bg-gray-600 text-gray-300 cursor-not-allowed"
-                    : "bg-red-500/20 border border-red-500/30 text-red-300 hover:bg-red-500/30 hover:scale-105"
+                    ? "bg-slate-600/50 text-slate-400 cursor-not-allowed"
+                    : "glass border border-red-400/30 text-red-300 hover:bg-red-500/20 hover:scale-105 glow-purple"
                 }`}
               >
-                {ispending ? "Logging out..." : "🚪 LogOut"}
+                {ispending ? (
+                  <div className="flex items-center space-x-2">
+                    <div className="w-4 h-4 loading-spinner"></div>
+                    <span>Logging out...</span>
+                  </div>
+                ) : (
+                  <span className="flex items-center space-x-2">
+                    <span>🚪</span>
+                    <span>LogOut</span>
+                  </span>
+                )}
               </button>
             </div>
           </div>
         </nav>
 
         {/* Main Content */}
-        <div className="flex-1 p-8 max-w-7xl mx-auto w-full space-y-16">
-          {/* Hero Section */}
-          <div className="text-center py-12">
-            <h2 className="text-6xl font-bold gradient-text mb-6 float">
-              Manage Your Tasks
+        <div className="flex-1 p-8 max-w-7xl mx-auto w-full space-y-20">
+          {/* Enhanced Hero Section */}
+          <div className="text-center py-16 relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-400/5 to-transparent rounded-3xl"></div>
+            <h2 className="text-7xl font-bold gradient-text mb-8 float relative z-10">
+              Manage Your Universe
             </h2>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Collaborate with your team, track progress, and achieve your goals with our beautiful task management platform.
+            <p className="text-2xl text-slate-300 max-w-3xl mx-auto leading-relaxed relative z-10">
+              Collaborate with your stellar team, track cosmic progress, and achieve galactic goals with our revolutionary task management platform.
             </p>
+            <div className="mt-8 flex justify-center space-x-4 relative z-10">
+              <div className="glass px-6 py-3 rounded-full border border-amber-400/30">
+                <span className="text-amber-300 font-semibold">{users?.length || 0} Active Members</span>
+              </div>
+              <div className="glass px-6 py-3 rounded-full border border-emerald-400/30">
+                <span className="text-emerald-300 font-semibold">{tasks?.length || 0} Active Tasks</span>
+              </div>
+            </div>
           </div>
 
-          {/* Users Section */}
+          {/* Enhanced Users Section */}
           <section>
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-4xl font-bold gradient-text">Team Members</h2>
-              <div className="text-sm text-gray-400 glass px-4 py-2 rounded-full">
-                {users?.length || 0} active members
+            <div className="flex items-center justify-between mb-12">
+              <div>
+                <h2 className="text-5xl font-bold gradient-text-secondary mb-4">Stellar Team</h2>
+                <p className="text-xl text-slate-400">Your cosmic collaborators</p>
+              </div>
+              <div className="glass-secondary px-6 py-3 rounded-2xl border border-emerald-400/30">
+                <span className="text-emerald-300 font-bold text-lg">{users?.length || 0} Members Online</span>
               </div>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
               {users &&
                 users.map((u, index) => (
                   <Link
                     key={u.uid}
                     to={`/user/${u.uid}`}
-                    className="glass rounded-2xl p-6 hover:scale-105 transition-all duration-300 group relative overflow-hidden"
-                    style={{ animationDelay: `${index * 100}ms` }}
+                    className="glass rounded-3xl p-8 card-hover group relative overflow-hidden border border-amber-400/20"
+                    style={{ animationDelay: `${index * 150}ms` }}
                   >
-                    {/* Gradient overlay on hover */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
-                    
                     <div className="relative z-10">
-                      <div className="flex items-center space-x-4 mb-4">
+                      <div className="flex flex-col items-center space-y-6 mb-6">
                         <div className="relative">
                           <img
                             src={
@@ -104,103 +145,110 @@ export default function Home() {
                               `https://api.dicebear.com/7.x/adventurer/svg?seed=${u.uid}`
                             }
                             alt={u.displayName}
-                            className="w-16 h-16 rounded-full border-2 border-white/20 shadow-lg"
+                            className="w-20 h-20 rounded-2xl border-3 border-amber-400/30 shadow-2xl object-cover"
                           />
-                          <div className={`absolute -bottom-1 -right-1 w-5 h-5 rounded-full border-2 border-white ${
-                            u.online ? "bg-green-400" : "bg-gray-400"
+                          <div className={`absolute -bottom-2 -right-2 w-6 h-6 rounded-full border-3 border-slate-900 ${
+                            u.online ? "status-online" : "status-offline"
                           }`}></div>
                         </div>
-                        <div className="flex-1">
-                          <h3 className="font-bold text-lg text-white group-hover:text-purple-300 transition-colors">
+                        <div className="text-center">
+                          <h3 className="font-bold text-xl text-white group-hover:text-amber-300 transition-colors mb-2">
                             {u.displayName}
                           </h3>
-                          <p className="text-sm text-gray-400">{u.email}</p>
+                          <p className="text-sm text-slate-400 font-medium">{u.email}</p>
                         </div>
                       </div>
 
-                      <div className="flex items-center justify-between">
-                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                          u.online 
-                            ? "bg-green-500/20 text-green-300 border border-green-500/30" 
-                            : "bg-gray-500/20 text-gray-300 border border-gray-500/30"
-                        }`}>
-                          {u.online ? "🟢 Online" : "⚫ Offline"}
-                        </span>
-                        
-                        <div className="text-xs text-gray-400">
-                          {tasks?.filter((t) => t.createdBy === u.uid).length || 0} tasks
-                        </div>
-                      </div>
-
-                      {/* Tasks preview */}
-                      {tasks?.filter((t) => t.createdBy === u.uid).length > 0 && (
-                        <div className="mt-4 pt-4 border-t border-white/10">
-                          <p className="text-xs text-gray-400 mb-2">Recent tasks:</p>
-                          <div className="space-y-1">
-                            {tasks
-                              ?.filter((t) => t.createdBy === u.uid)
-                              .slice(0, 2)
-                              .map((t) => (
-                                <div key={t.id} className="text-xs text-gray-300 truncate">
-                                  • {t.name}
-                                </div>
-                              ))}
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <span className={`px-4 py-2 rounded-xl text-xs font-bold ${
+                            u.online 
+                              ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30" 
+                              : "bg-slate-500/20 text-slate-400 border border-slate-500/30"
+                          }`}>
+                            {u.online ? "🟢 Online" : "⚫ Offline"}
+                          </span>
+                          
+                          <div className="glass-secondary px-3 py-1 rounded-lg border border-violet-400/30">
+                            <span className="text-xs text-violet-300 font-semibold">
+                              {tasks?.filter((t) => t.createdBy === u.uid).length || 0} tasks
+                            </span>
                           </div>
                         </div>
-                      )}
+
+                        {/* Enhanced tasks preview */}
+                        {tasks?.filter((t) => t.createdBy === u.uid).length > 0 && (
+                          <div className="glass-secondary rounded-2xl p-4 border border-emerald-400/20">
+                            <p className="text-xs text-emerald-300 font-semibold mb-3">Recent Missions:</p>
+                            <div className="space-y-2">
+                              {tasks
+                                ?.filter((t) => t.createdBy === u.uid)
+                                .slice(0, 2)
+                                .map((t) => (
+                                  <div key={t.id} className="flex items-center space-x-2">
+                                    <div className="w-2 h-2 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full"></div>
+                                    <span className="text-xs text-slate-300 truncate font-medium">{t.name}</span>
+                                  </div>
+                                ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </Link>
                 ))}
             </div>
           </section>
 
-          {/* Tasks Section */}
+          {/* Enhanced Tasks Section */}
           <section>
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-4xl font-bold gradient-text">Active Tasks</h2>
-              <div className="text-sm text-gray-400 glass px-4 py-2 rounded-full">
-                {tasks?.length || 0} total tasks
+            <div className="flex items-center justify-between mb-12">
+              <div>
+                <h2 className="text-5xl font-bold gradient-text mb-4">Active Missions</h2>
+                <p className="text-xl text-slate-400">Your current objectives</p>
+              </div>
+              <div className="glass-secondary px-6 py-3 rounded-2xl border border-violet-400/30">
+                <span className="text-violet-300 font-bold text-lg">{tasks?.length || 0} Active</span>
               </div>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {tasks &&
                 tasks.map((task, index) => (
                   <Link
                     key={task.uid}
                     to={`/task/${task.uid}`}
-                    className="glass rounded-2xl p-6 hover:scale-105 transition-all duration-300 group relative overflow-hidden"
-                    style={{ animationDelay: `${index * 100}ms` }}
+                    className="glass rounded-3xl p-8 card-hover group relative overflow-hidden border border-emerald-400/20"
+                    style={{ animationDelay: `${index * 150}ms` }}
                   >
-                    {/* Gradient overlay on hover */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
-                    
                     <div className="relative z-10">
-                      <div className="flex items-start justify-between mb-4">
-                        <div className="w-3 h-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"></div>
-                        <div className="text-xs text-gray-400 glass px-2 py-1 rounded-full">
-                          Task
+                      <div className="flex items-start justify-between mb-6">
+                        <div className="w-4 h-4 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full shadow-lg glow-gold"></div>
+                        <div className="glass-secondary px-3 py-1 rounded-xl border border-violet-400/30">
+                          <span className="text-xs text-violet-300 font-bold">MISSION</span>
                         </div>
                       </div>
                       
-                      <h3 className="font-bold text-xl text-white group-hover:text-purple-300 transition-colors mb-3">
+                      <h3 className="font-bold text-2xl text-white group-hover:text-amber-300 transition-colors mb-4 leading-tight">
                         {task.name}
                       </h3>
                       
-                      <p className="text-gray-400 text-sm mb-4 line-clamp-3">
-                        {task.description || "No description provided"}
+                      <p className="text-slate-400 text-base mb-6 line-clamp-3 leading-relaxed">
+                        {task.description || "No mission briefing provided"}
                       </p>
                       
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
-                          <div className="w-6 h-6 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-xs">
+                        <div className="flex items-center space-x-3">
+                          <div className="w-8 h-8 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-xl flex items-center justify-center text-sm shadow-lg">
                             📋
                           </div>
-                          <span className="text-xs text-gray-400">View Details</span>
+                          <span className="text-sm text-emerald-300 font-semibold">View Mission</span>
                         </div>
                         
-                        <div className="text-xs text-gray-500">
-                          {task.comments?.length || 0} comments
+                        <div className="glass-secondary px-3 py-1 rounded-lg border border-amber-400/30">
+                          <span className="text-xs text-amber-300 font-semibold">
+                            {task.comments?.length || 0} updates
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -209,17 +257,23 @@ export default function Home() {
             </div>
 
             {(!tasks || tasks.length === 0) && (
-              <div className="text-center py-16">
-                <div className="w-24 h-24 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl">
-                  📝
+              <div className="text-center py-20">
+                <div className="relative inline-block mb-8">
+                  <div className="w-32 h-32 bg-gradient-to-br from-amber-400 via-orange-500 to-amber-600 rounded-3xl flex items-center justify-center mx-auto shadow-2xl glow-gold">
+                    <span className="text-6xl">🚀</span>
+                  </div>
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full animate-pulse"></div>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-300 mb-4">No tasks yet</h3>
-                <p className="text-gray-400 mb-8">Create your first task to get started!</p>
+                <h3 className="text-4xl font-bold gradient-text mb-6">Ready for Launch</h3>
+                <p className="text-xl text-slate-400 mb-12 max-w-2xl mx-auto">
+                  Your mission control center is ready. Create your first task to begin your cosmic journey!
+                </p>
                 <Link
                   to="/create"
-                  className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl font-semibold hover:scale-105 transition-all duration-300 shadow-lg glow"
+                  className="inline-flex items-center px-12 py-6 btn-primary rounded-2xl font-bold hover:scale-105 transition-all duration-300 shadow-2xl glow-gold text-xl"
                 >
-                  ✨ Create Your First Task
+                  <span className="mr-3">🚀</span>
+                  <span>Launch Your First Mission</span>
                 </Link>
               </div>
             )}

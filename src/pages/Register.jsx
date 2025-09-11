@@ -22,85 +22,109 @@ export default function Register() {
   }, [data]);
 
   const inputClass =
-    "w-full px-6 py-4 glass rounded-2xl text-white placeholder-gray-400 border border-white/20 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300";
+    "w-full px-8 py-5 glass rounded-2xl text-white placeholder-slate-400 border border-violet-400/30 input-focus transition-all duration-300 text-lg font-medium";
 
   const buttonClass =
-    "w-full py-4 rounded-2xl font-semibold flex items-center justify-center gap-3 transition-all duration-300 hover:scale-105 shadow-lg";
+    "w-full py-5 rounded-2xl font-bold flex items-center justify-center gap-4 transition-all duration-300 hover:scale-105 shadow-2xl text-lg";
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden">
-      {/* Animated background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900"></div>
+    <div className="min-h-screen flex items-center justify-center px-6 relative overflow-hidden">
+      {/* Enhanced animated background */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse"></div>
-        <div className="absolute top-3/4 right-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse delay-1000"></div>
-        <div className="absolute bottom-1/4 left-1/2 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse delay-2000"></div>
+        <div className="absolute top-20 left-20 w-96 h-96 bg-gradient-to-r from-violet-400/30 to-purple-500/30 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+        <div className="absolute top-1/2 right-20 w-80 h-80 bg-gradient-to-r from-amber-400/30 to-orange-500/30 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute bottom-20 left-1/3 w-72 h-72 bg-gradient-to-r from-emerald-400/30 to-teal-500/30 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-2000"></div>
+        <div className="absolute bottom-32 right-32 w-64 h-64 bg-gradient-to-r from-pink-400/30 to-rose-500/30 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-3000"></div>
       </div>
 
-      <div className="relative z-10 w-full max-w-md">
+      {/* Floating particles */}
+      <div className="particles">
+        {[...Array(12)].map((_, i) => (
+          <div
+            key={i}
+            className="particle"
+            style={{
+              left: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 8}s`,
+              animationDuration: `${8 + Math.random() * 4}s`
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="relative z-10 w-full max-w-lg">
         <Form
           method="post"
-          className="glass rounded-3xl p-8 shadow-2xl space-y-6 backdrop-blur-xl border border-white/20"
+          className="glass rounded-3xl p-10 shadow-2xl space-y-8 backdrop-blur-xl border border-violet-400/30 glow-purple"
         >
-          {/* Header */}
-          <div className="text-center mb-8">
-            <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-              <span className="text-3xl font-bold">T</span>
+          {/* Enhanced Header */}
+          <div className="text-center mb-10">
+            <div className="relative inline-block mb-8">
+              <div className="w-24 h-24 bg-gradient-to-br from-violet-400 via-purple-500 to-violet-600 rounded-3xl flex items-center justify-center mx-auto shadow-2xl glow-purple">
+                <span className="text-4xl font-bold text-white">🚀</span>
+              </div>
+              <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full animate-pulse"></div>
             </div>
-            <h1 className="text-3xl font-bold gradient-text mb-2">Join TaskFlow</h1>
-            <p className="text-gray-300">Create your account to get started</p>
+            <h1 className="text-4xl font-bold gradient-text mb-4">Join TaskFlow Pro</h1>
+            <p className="text-xl text-slate-300 font-medium">Create your account to begin the cosmic adventure</p>
           </div>
 
-          {/* Inputs */}
-          <div className="space-y-4">
-            <input 
-              type="text" 
-              name="name" 
-              placeholder="👤 Full Name" 
-              className={inputClass} 
-            />
-            <input 
-              type="email" 
-              name="email" 
-              placeholder="✉️ Email Address" 
-              className={inputClass} 
-            />
-            <input 
-              type="password" 
-              name="password" 
-              placeholder="🔒 Password" 
-              className={inputClass} 
-            />
+          {/* Enhanced Inputs */}
+          <div className="space-y-6">
+            <div className="relative">
+              <input 
+                type="text" 
+                name="name" 
+                placeholder="👤 Full Name" 
+                className={inputClass} 
+              />
+            </div>
+            <div className="relative">
+              <input 
+                type="email" 
+                name="email" 
+                placeholder="✉️ Email Address" 
+                className={inputClass} 
+              />
+            </div>
+            <div className="relative">
+              <input 
+                type="password" 
+                name="password" 
+                placeholder="🔒 Password" 
+                className={inputClass} 
+              />
+            </div>
           </div>
 
-          {/* Continue / Loading */}
+          {/* Enhanced Continue / Loading */}
           <button
             type="submit"
             disabled={isPending}
-            className={`${buttonClass} bg-gradient-to-r from-purple-500 to-pink-500 text-white glow ${
+            className={`${buttonClass} btn-accent glow-purple ${
               isPending ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
             {isPending ? (
               <>
-                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                Creating account...
+                <div className="w-6 h-6 loading-spinner"></div>
+                <span>Creating account...</span>
               </>
             ) : (
               <>
-                Create Account
-                <FaAngleDoubleRight size={20} />
+                <span>Launch Account</span>
+                <FaAngleDoubleRight size={24} />
               </>
             )}
           </button>
 
-          {/* Link to Login */}
-          <div className="text-center pt-4">
-            <p className="text-gray-400 text-sm">
+          {/* Enhanced Link to Login */}
+          <div className="text-center pt-6">
+            <p className="text-slate-400 text-lg">
               Already have an account?{" "}
               <NavLink
                 to="/login"
-                className="text-purple-300 hover:text-purple-200 font-medium transition-colors"
+                className="text-emerald-300 hover:text-emerald-200 font-bold transition-colors text-xl"
               >
                 Sign in here
               </NavLink>

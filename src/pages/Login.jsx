@@ -35,153 +35,178 @@ export default function Login() {
   }, [data]);
 
   const inputClass =
-    "w-full px-6 py-4 glass rounded-2xl text-white placeholder-gray-400 border border-white/20 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300";
+    "w-full px-8 py-5 glass rounded-2xl text-white placeholder-slate-400 border border-amber-400/30 input-focus transition-all duration-300 text-lg font-medium";
 
   const buttonClass =
-    "w-full py-4 rounded-2xl font-semibold flex items-center justify-center gap-3 transition-all duration-300 hover:scale-105 shadow-lg";
+    "w-full py-5 rounded-2xl font-bold flex items-center justify-center gap-4 transition-all duration-300 hover:scale-105 shadow-2xl text-lg";
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden">
-      {/* Animated background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900"></div>
+    <div className="min-h-screen flex items-center justify-center px-6 relative overflow-hidden">
+      {/* Enhanced animated background */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse"></div>
-        <div className="absolute top-3/4 right-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse delay-1000"></div>
-        <div className="absolute bottom-1/4 left-1/2 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse delay-2000"></div>
+        <div className="absolute top-20 left-20 w-96 h-96 bg-gradient-to-r from-amber-400/30 to-orange-500/30 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+        <div className="absolute top-1/2 right-20 w-80 h-80 bg-gradient-to-r from-emerald-400/30 to-teal-500/30 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute bottom-20 left-1/3 w-72 h-72 bg-gradient-to-r from-violet-400/30 to-purple-500/30 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-2000"></div>
+        <div className="absolute bottom-32 right-32 w-64 h-64 bg-gradient-to-r from-pink-400/30 to-rose-500/30 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-3000"></div>
       </div>
 
-      <div className="relative z-10 w-full max-w-md">
+      {/* Floating particles */}
+      <div className="particles">
+        {[...Array(12)].map((_, i) => (
+          <div
+            key={i}
+            className="particle"
+            style={{
+              left: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 8}s`,
+              animationDuration: `${8 + Math.random() * 4}s`
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="relative z-10 w-full max-w-lg">
         {!recoveryMode ? (
           <Form
             method="post"
-            className="glass rounded-3xl p-8 shadow-2xl space-y-6 backdrop-blur-xl border border-white/20"
+            className="glass rounded-3xl p-10 shadow-2xl space-y-8 backdrop-blur-xl border border-amber-400/30 glow-gold"
           >
-            {/* Header */}
-            <div className="text-center mb-8">
-              <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                <span className="text-3xl font-bold">T</span>
+            {/* Enhanced Header */}
+            <div className="text-center mb-10">
+              <div className="relative inline-block mb-8">
+                <div className="w-24 h-24 bg-gradient-to-br from-amber-400 via-orange-500 to-amber-600 rounded-3xl flex items-center justify-center mx-auto shadow-2xl glow-gold">
+                  <span className="text-4xl font-bold text-slate-900">✨</span>
+                </div>
+                <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full animate-pulse"></div>
               </div>
-              <h1 className="text-3xl font-bold gradient-text mb-2">Welcome Back</h1>
-              <p className="text-gray-300">Sign in to continue to TaskFlow</p>
+              <h1 className="text-4xl font-bold gradient-text mb-4">Welcome Back</h1>
+              <p className="text-xl text-slate-300 font-medium">Sign in to continue your cosmic journey</p>
             </div>
 
-            {/* Inputs */}
-            <div className="space-y-4">
-              <input 
-                type="email" 
-                name="email" 
-                placeholder="✉️ Email address" 
-                className={inputClass} 
-              />
-              <input 
-                type="password" 
-                name="password" 
-                placeholder="🔒 Password" 
-                className={inputClass} 
-              />
+            {/* Enhanced Inputs */}
+            <div className="space-y-6">
+              <div className="relative">
+                <input 
+                  type="email" 
+                  name="email" 
+                  placeholder="✉️ Email address" 
+                  className={inputClass} 
+                />
+              </div>
+              <div className="relative">
+                <input 
+                  type="password" 
+                  name="password" 
+                  placeholder="🔒 Password" 
+                  className={inputClass} 
+                />
+              </div>
             </div>
 
-            {/* Forgot / Register */}
-            <div className="flex justify-between items-center text-sm">
+            {/* Enhanced Forgot / Register */}
+            <div className="flex justify-between items-center text-base">
               <button
                 type="button"
                 onClick={() => setRecoveryMode(true)}
-                className="text-purple-300 hover:text-purple-200 transition-colors"
+                className="text-emerald-300 hover:text-emerald-200 transition-colors font-semibold"
               >
                 Forgot password?
               </button>
               <NavLink
                 to="/register"
-                className="glass px-4 py-2 rounded-full text-purple-300 hover:text-white transition-all duration-300 border border-purple-500/30"
+                className="glass-secondary px-6 py-3 rounded-2xl text-violet-300 hover:text-white transition-all duration-300 border border-violet-400/30 font-semibold glow-purple"
               >
                 Create account
               </NavLink>
             </div>
 
-            {/* Continue Button */}
+            {/* Enhanced Continue Button */}
             <button
               type="submit"
               disabled={isPending}
-              className={`${buttonClass} bg-gradient-to-r from-purple-500 to-pink-500 text-white glow ${
+              className={`${buttonClass} btn-primary glow-gold ${
                 isPending ? "opacity-50 cursor-not-allowed" : ""
               }`}
             >
               {isPending ? (
                 <>
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                  Signing in...
+                  <div className="w-6 h-6 loading-spinner"></div>
+                  <span>Signing in...</span>
                 </>
               ) : (
                 <>
-                  Continue
-                  <FaAngleDoubleRight size={20} />
+                  <span>Continue Journey</span>
+                  <FaAngleDoubleRight size={24} />
                 </>
               )}
             </button>
 
-            {/* Or Separator */}
-            <div className="flex items-center gap-4 my-6">
-              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-              <span className="text-gray-400 text-sm font-medium">or</span>
-              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+            {/* Enhanced Or Separator */}
+            <div className="flex items-center gap-6 my-8">
+              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-amber-400/40 to-transparent"></div>
+              <span className="text-slate-400 text-lg font-bold px-4">or</span>
+              <div className="flex-1 h-px bg-gradient-to-r from-transparent via-amber-400/40 to-transparent"></div>
             </div>
 
-            {/* Google Login */}
+            {/* Enhanced Google Login */}
             <button
               onClick={googleLogin}
               disabled={_isPending}
               type="button"
-              className={`${buttonClass} glass border border-white/20 text-white hover:bg-white/10 ${
+              className={`${buttonClass} glass-secondary border border-emerald-400/30 text-white hover:bg-emerald-500/10 glow-mint ${
                 _isPending ? "opacity-50 cursor-not-allowed" : ""
               }`}
             >
               {_isPending ? (
                 <>
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                  Loading...
+                  <div className="w-6 h-6 loading-spinner"></div>
+                  <span>Loading...</span>
                 </>
               ) : (
                 <>
-                  <FcGoogle size={24} />
-                  Continue with Google
+                  <FcGoogle size={28} />
+                  <span>Continue with Google</span>
                 </>
               )}
             </button>
           </Form>
         ) : (
-          // Password Recovery
+          // Enhanced Password Recovery
           <Form
             method="post"
-            className="glass rounded-3xl p-8 shadow-2xl space-y-6 backdrop-blur-xl border border-white/20"
+            className="glass rounded-3xl p-10 shadow-2xl space-y-8 backdrop-blur-xl border border-emerald-400/30 glow-mint"
           >
-            <div className="text-center mb-8">
-              <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                <span className="text-3xl">🔑</span>
+            <div className="text-center mb-10">
+              <div className="relative inline-block mb-8">
+                <div className="w-24 h-24 bg-gradient-to-br from-emerald-400 via-teal-500 to-emerald-600 rounded-3xl flex items-center justify-center mx-auto shadow-2xl glow-mint">
+                  <span className="text-4xl">🔑</span>
+                </div>
+                <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full animate-pulse"></div>
               </div>
-              <h1 className="text-3xl font-bold gradient-text mb-2">Reset Password</h1>
-              <p className="text-gray-300">Enter your email to receive a reset link</p>
+              <h1 className="text-4xl font-bold gradient-text-secondary mb-4">Reset Password</h1>
+              <p className="text-xl text-slate-300 font-medium">Enter your email to receive a cosmic reset link</p>
             </div>
 
             <input
               type="email"
               placeholder="✉️ Enter your email"
               name="emailRecovery"
-              className={inputClass}
+              className={inputClass.replace('border-amber-400/30', 'border-emerald-400/30')}
             />
 
             <button
               type="submit"
-              className={`${buttonClass} bg-gradient-to-r from-blue-500 to-purple-500 text-white glow`}
+              className={`${buttonClass} btn-secondary glow-mint`}
             >
-              Send Recovery Link
+              <span>Send Recovery Link</span>
             </button>
 
             <button
               type="button"
               onClick={() => setRecoveryMode(false)}
-              className={`${buttonClass} glass border border-white/20 text-gray-300 hover:text-white hover:bg-white/10`}
+              className={`${buttonClass} glass border border-slate-400/30 text-slate-300 hover:text-white hover:bg-slate-500/10`}
             >
-              ← Back to Login
+              <span>← Back to Login</span>
             </button>
           </Form>
         )}
