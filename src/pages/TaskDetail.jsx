@@ -58,27 +58,27 @@ export default function TaskDetails() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white p-6">
-      <div className="max-w-2xl mx-auto bg-neutral-900 p-6 rounded-xl shadow-md flex flex-col h-[80vh]">
+    <div className="min-h-screen bg-gradient-to-br from-dark-900 via-warm-950 to-dark-900 text-warm-100 p-4 sm:p-6">
+      <div className="max-w-2xl mx-auto bg-gradient-to-br from-dark-800 to-warm-950 p-4 sm:p-6 rounded-xl shadow-2xl flex flex-col h-[85vh] sm:h-[80vh] border border-warm-800/30 backdrop-blur-sm">
         {/* Заголовок таска */}
         {task && (
-          <div className="mb-4 border-b border-neutral-700 pb-3">
-            <h1 className="text-2xl font-bold mb-1">{task.name}</h1>
-            <p className="text-gray-400">
-              {task.description || "No description"}
+          <div className="mb-4 border-b border-warm-700/50 pb-3">
+            <h1 className="text-xl sm:text-2xl font-bold mb-1 text-warm-200">📋 {task.name}</h1>
+            <p className="text-warm-400 text-sm sm:text-base">
+              {task.description || "📝 No description"}
             </p>
           </div>
         )}
 
       {/* Комментарии */}
-<div className="flex-1 overflow-y-auto max-h-[400px] space-y-3 pr-2 border border-neutral-800 rounded-lg p-4 bg-neutral-950">
+<div className="flex-1 overflow-y-auto max-h-[400px] space-y-3 pr-2 border border-warm-800/30 rounded-lg p-3 sm:p-4 bg-gradient-to-b from-dark-900/50 to-warm-950/50 backdrop-blur-sm">
   {comments && comments.length > 0 ? (
     comments.map((c) => {
       const isMine = c.uid === user.uid;
       return (
         <div
           key={c.id}
-          className={`flex items-end gap-2 ${
+          className={`flex items-end gap-2 sm:gap-3 ${
             isMine ? "justify-end" : "justify-start"
           }`}
         >
@@ -86,21 +86,21 @@ export default function TaskDetails() {
             <img
               src={c.photoURL}
               alt={c.displayName}
-              className="w-8 h-8 rounded-full border border-neutral-700"
+              className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-warm-700/50 shadow-lg"
             />
           )}
           <div
-            className={`max-w-[70%] p-3 rounded-xl ${
+            className={`max-w-[75%] sm:max-w-[70%] p-3 rounded-xl shadow-lg ${
               isMine
-                ? "bg-blue-600 text-white rounded-br-none"
-                : "bg-neutral-800 text-gray-200 rounded-bl-none"
+                ? "bg-gradient-to-r from-warm-600 to-warm-700 text-warm-100 rounded-br-none"
+                : "bg-gradient-to-r from-dark-800 to-warm-900 text-warm-200 rounded-bl-none"
             }`}
           >
             {!isMine && (
-              <p className="text-xs text-gray-400 mb-1">{c.displayName}</p>
+              <p className="text-xs text-warm-400 mb-1 font-medium">{c.displayName}</p>
             )}
-            <p>{c.text}</p>
-            <p className="text-[10px] text-gray-400 mt-1 text-right">
+            <p className="text-sm sm:text-base">{c.text}</p>
+            <p className="text-[10px] text-warm-400/70 mt-1 text-right">
               {formatDate(c.createdAt)}
             </p>
           </div>
@@ -108,17 +108,17 @@ export default function TaskDetails() {
             <img
               src={c.photoURL}
               alt={c.displayName}
-              className="w-8 h-8 rounded-full border border-neutral-700"
+              className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-warm-700/50 shadow-lg"
             />
           )}
         </div>
       );
     })
   ) : (
-    <div className="flex flex-col items-center justify-center h-64 text-gray-400">
+    <div className="flex flex-col items-center justify-center h-64 text-warm-400">
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        className="w-24 h-24 mb-4 opacity-60"
+        className="w-16 h-16 sm:w-24 sm:h-24 mb-4 opacity-60"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -130,8 +130,8 @@ export default function TaskDetails() {
           d="M7.5 8.25h9m-9 3.75h6m-8.25 4.5h9.75L18 21V6.75A2.25 2.25 0 0015.75 4.5H6.75A2.25 2.25 0 004.5 6.75v9a2.25 2.25 0 002.25 2.25z"
         />
       </svg>
-      <p className="text-lg font-medium">Пока нет комментариев</p>
-      <p className="text-sm text-gray-500">
+      <p className="text-base sm:text-lg font-medium">Пока нет комментариев</p>
+      <p className="text-sm text-warm-500 text-center">
         ✍️ Напиши первым, чтобы начать обсуждение
       </p>
     </div>
@@ -141,19 +141,19 @@ export default function TaskDetails() {
 
 
         {/* Форма */}
-        <form onSubmit={handleSubmit} className="mt-4 flex gap-2">
+        <form onSubmit={handleSubmit} className="mt-4 flex gap-2 sm:gap-3">
           <input
             type="text"
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
-            placeholder="Write a comment..."
-            className="flex-1 px-4 py-2 rounded-lg bg-neutral-800 text-white outline-none focus:ring-2 focus:ring-gray-600"
+            placeholder="💬 Write a comment..."
+            className="flex-1 px-4 py-3 rounded-lg bg-dark-800/80 text-warm-100 placeholder-warm-400 outline-none focus:ring-2 focus:ring-warm-500 border border-warm-700/50 transition-all duration-300"
           />
           <button
             type="submit"
-            className="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-200 transition"
+            className="px-4 sm:px-6 py-3 bg-gradient-to-r from-warm-600 to-warm-700 text-warm-100 rounded-lg hover:from-warm-500 hover:to-warm-600 transition-all duration-300 transform hover:scale-105 shadow-lg font-medium"
           >
-            Send
+            📤
           </button>
         </form>
       </div>

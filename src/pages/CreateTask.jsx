@@ -54,76 +54,85 @@ function CreateTask() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-dark-900 via-warm-950 to-dark-900 px-4 py-8">
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-lg bg-neutral-900 p-8 rounded-2xl shadow-lg space-y-6"
+        className="w-full max-w-lg bg-gradient-to-br from-dark-800 to-warm-950 p-6 sm:p-8 rounded-2xl shadow-2xl space-y-4 sm:space-y-6 border border-warm-800/30 backdrop-blur-sm"
       >
         {/* Title */}
         <div className="flex flex-col">
-          <label htmlFor="title" className="mb-2 text-sm font-medium text-gray-300">
+          <label htmlFor="title" className="mb-2 text-sm font-medium text-warm-300">
             Title
           </label>
           <input
             type="text"
-            placeholder="Enter task title"
+            placeholder="📝 Enter task title"
             id="title"
             name="title"
-            className="px-4 py-2 rounded-lg bg-neutral-800 text-white placeholder-gray-500 border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
+            className="px-4 py-3 rounded-lg bg-dark-800/80 text-warm-100 placeholder-warm-400 border border-warm-700/50 focus:outline-none focus:ring-2 focus:ring-warm-500 focus:border-warm-500 transition-all duration-300"
           />
         </div>
 
         {/* Description */}
         <div className="flex flex-col">
-          <label htmlFor="description" className="mb-2 text-sm font-medium text-gray-300">
+          <label htmlFor="description" className="mb-2 text-sm font-medium text-warm-300">
             Description
           </label>
           <textarea
             name="description"
             id="description"
-            placeholder="Enter task description"
+            placeholder="📄 Enter task description"
             rows={4}
-            className="px-4 py-2 rounded-lg bg-neutral-800 text-white placeholder-gray-500 border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
+            className="px-4 py-3 rounded-lg bg-dark-800/80 text-warm-100 placeholder-warm-400 border border-warm-700/50 focus:outline-none focus:ring-2 focus:ring-warm-500 focus:border-warm-500 transition-all duration-300 resize-none"
           ></textarea>
         </div>
 
         {/* Due date */}
         <div className="flex flex-col">
-          <label htmlFor="due-to" className="mb-2 text-sm font-medium text-gray-300">
+          <label htmlFor="due-to" className="mb-2 text-sm font-medium text-warm-300">
             Due to
           </label>
           <input
             type="date"
             id="due-to"
             name="due-to"
-            className="px-4 py-2 rounded-lg bg-neutral-800 text-white border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
+            className="px-4 py-3 rounded-lg bg-dark-800/80 text-warm-100 border border-warm-700/50 focus:outline-none focus:ring-2 focus:ring-warm-500 focus:border-warm-500 transition-all duration-300"
           />
         </div>
 
         {/* Users */}
         <div className="flex flex-col">
-          <label className="mb-2 text-sm font-medium text-gray-300">Assign Users</label>
+          <label className="mb-2 text-sm font-medium text-warm-300">👥 Assign Users</label>
           <Select
             isMulti
             name="Users"
             options={userOptions}
-            className="text-black"
+            className="text-dark-900"
             classNamePrefix="react-select"
             styles={{
-              control: (base) => ({ ...base, backgroundColor: "#171717", borderColor: "#404040", color: "white" }),
-              menu: (base) => ({ ...base, backgroundColor: "#171717", color: "white" }),
-              multiValue: (base) => ({ ...base, backgroundColor: "#262626", color: "white" }),
-              singleValue: (base) => ({ ...base, color: "white" }),
-              input: (base) => ({ ...base, color: "white" }),
+              control: (base) => ({ 
+                ...base, 
+                backgroundColor: "rgba(42, 31, 31, 0.8)", 
+                borderColor: "rgba(205, 133, 63, 0.5)", 
+                color: "#f2e8e5",
+                borderRadius: "0.5rem",
+                padding: "0.25rem"
+              }),
+              menu: (base) => ({ ...base, backgroundColor: "#2a1f1f", color: "#f2e8e5", borderRadius: "0.5rem" }),
+              multiValue: (base) => ({ ...base, backgroundColor: "#5a4040", color: "#f2e8e5", borderRadius: "0.25rem" }),
+              multiValueLabel: (base) => ({ ...base, color: "#f2e8e5" }),
+              singleValue: (base) => ({ ...base, color: "#f2e8e5" }),
+              input: (base) => ({ ...base, color: "#f2e8e5" }),
+              placeholder: (base) => ({ ...base, color: "#bfa094" }),
             }}
           />
         </div>
 
         <button
           type="submit"
-          className="w-full py-3 bg-white text-black font-semibold rounded-lg hover:bg-gray-200 transition"
+          className="w-full py-3 bg-gradient-to-r from-warm-600 to-warm-700 text-warm-100 font-semibold rounded-lg hover:from-warm-500 hover:to-warm-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
         >
-          Create Task
+          ✨ Create Task
         </button>
       </form>
     </div>
