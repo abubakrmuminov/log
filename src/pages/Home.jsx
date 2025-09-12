@@ -8,7 +8,7 @@ export default function Home() {
   const { user } = useSelector((store) => store.user);
   const { data: users } = useCollection("users");
   const { data: tasks } = useCollection("tasks");
-
+console.log("TASKS:", tasks)
   return (
     <div className="min-h-screen bg-black text-white flex flex-col">
       {/* Navbar */}
