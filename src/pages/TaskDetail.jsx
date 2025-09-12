@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useDocument } from "../hook/UseDocument";
+import { useDocument } from "../hook/useDocument";
 import { useSubCollection } from "../hook/useSubCollection";
 import { useSelector } from "react-redux";
 import { db } from "../firebase/config";
