@@ -92,13 +92,16 @@ export default function Login() {
 
           {/* Google Login */}
           <button
-            onClick={googleLogin}
-            disabled={_isPending}
-            className={`${buttonClass} bg-white text-black hover:bg-gray-200 shadow-md hover:shadow-lg`}
-          >
-            {_isPending ? "Loading..." : "Sign in with Google"}
-            <FcGoogle size={22} />
-          </button>
+  onClick={async () => {
+    await googleLogin();
+    navigate("/"); // после успешного входа идём на Home
+  }}
+  disabled={_isPending}
+  className={`${buttonClass} bg-white text-black hover:bg-gray-200 shadow-md hover:shadow-lg`}
+>
+  {_isPending ? "Loading..." : "Sign in with Google"}
+  <FcGoogle size={22} />
+</button>
         </Form>
       ) : (
         // Password Recovery
