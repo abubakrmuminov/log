@@ -1,118 +1,127 @@
-import { useSelector } from "react-redux"
-import { useLogOut } from "../hook/LogOut"
-import { useCollection } from "../hook/useCollection"
-import { Link } from "react-router-dom"
-
+import { useSelector } from "react-redux";
+import { useLogOut } from "../hook/LogOut";
+import { useCollection } from "../hook/useCollection";
+import { Link } from "react-router-dom";
 
 export default function Home() {
-  const { ispending, logout } = useLogOut()
-  const { user } = useSelector((store) => store.user)
-  const { data } = useCollection("users")
-  const { data : tasks } = useCollection("tasks")
-  console.log(tasks);
-  
-
+  const { ispending, logout } = useLogOut();
+  const { user } = useSelector((store) => store.user);
+  const { data: users } = useCollection("users");
+  const { data: tasks } = useCollection("tasks");
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-dark-900 to-dark-800">
-      <div className="container mx-auto px-6 py-8">
-        {/* Navigation */}
-        <nav className="glass rounded-2xl p-6 mb-8 animate-fade-in">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-                <span className="text-white font-bold text-xl">{user.displayName?.charAt(0)}</span>
-              </div>
-              <div>
-                <h2 className="text-2xl font-bold text-white">Welcome back</h2>
-                <p className="text-gray-400">{user.displayName}</p>
-              </div>
-            </div>
-            
-            <div className="flex items-center space-x-4">
-              <Link 
-                to="/create" 
-                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-medium btn-glow transition-all duration-300"
-              >
-                Create Task
-              </Link>
-              {!ispending ? (
-                <button 
-                  onClick={logout}
-                  className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-xl font-medium btn-glow transition-all duration-300"
-                >
-                  Logout
-                </button>
-              ) : (
-                <button 
-                  disabled 
-                  className="bg-gray-600 text-white px-6 py-3 rounded-xl font-medium opacity-50 cursor-not-allowed"
-                >
-                  Loading...
-                </button>
-              )}
-            </div>
-          </div>
-        </nav>
+    <div className="min-h-screen bg-black text-white flex flex-col">
+      {/* Navbar */}
+      <nav className="flex items-center justify-between bg-neutral-900 px-6 py-4 shadow-lg">
+        <div className="text-2xl font-bold">Welcome, {user.displayName}</div>
+        <ul className="flex gap-4">
+          <li>
+            <button
+              onClick={logout}
+              disabled={ispending}
+              className={`px-4 py-2 rounded-xl font-medium transition ${
+                ispending
+                  ? "bg-gray-600 text-gray-300 cursor-not-allowed"
+                  : "bg-white text-black hover:bg-gray-200"
+              }`}
+            >
+              {ispending ? "Logging out..." : "LogOut"}
+            </button>
+          </li>
+          <li>
+            <Link
+              to="/create"
+              className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 transition font-medium"
+            >
+              Create Task
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/profile"
+              className="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 transition font-medium"
+            >
+              Profile
+            </Link>
+          </li>
+        </ul>
+      </nav>
 
+      {/* Main Content */}
+      <div className="flex-1 p-6 space-y-12">
         {/* Users Section */}
-        <div className="glass rounded-2xl p-8 animate-slide-up">
-          <div className="mb-8">
-            <h2 className="text-3xl font-bold text-white mb-2">Team Members</h2>
-            <p className="text-gray-400">Manage your team and track their activity</p>
-          </div>
-
-          <div className="grid gap-6">
-            {data && data.map((user, index) => (
-              <div 
-                key={user.uid} 
-                className="bg-dark-800 hover:bg-dark-700 rounded-xl p-6 border border-gray-800 hover:border-gray-700 transition-all duration-300 animate-fade-in"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <div className="relative">
-                      <img 
-                        src={user.photoUrl} 
-                        alt={user.displayName}
-                        className="w-16 h-16 rounded-full border-2 border-gray-700"
-                      />
-                      <div className={`absolute -bottom-1 -right-1 w-5 h-5 rounded-full border-2 border-dark-800 ${
-                        user.online ? 'bg-green-500' : 'bg-gray-500'
-                      }`}></div>
-                    </div>
-                    
+        <section>
+          <h2 className="text-2xl font-semibold mb-6">Users</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {users &&
+              users.map((u) => (
+                <Link
+                  key={u.uid}
+                  to={`/user/${u.uid}`}
+                  className="bg-neutral-900 rounded-2xl shadow-xl p-4 flex gap-4 hover:bg-neutral-800 transition transform hover:scale-105"
+                >
+                  <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-neutral-700 flex-shrink-0">
+                    <img
+                      src={
+                        u.photoUrl ||
+                        `https://api.dicebear.com/7.x/adventurer/svg?seed=${u.uid}`
+                      }
+                      alt={u.displayName}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="flex-1 flex flex-col justify-between">
                     <div>
-                      <h3 className="text-xl font-semibold text-white">{user.displayName}</h3>
-                      <p className="text-gray-400">{user.email}</p>
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-2 ${
-                        user.online 
-                          ? 'bg-green-900 text-green-300' 
-                          : 'bg-gray-900 text-gray-300'
-                      }`}>
-                        {user.online ? 'Online' : 'Offline'}
-                      </span>
+                      <h3 className="font-semibold text-lg">{u.displayName}</h3>
+                      <p className="text-sm text-gray-400">{u.email}</p>
                     </div>
-                  </div>
-                  
-                  <div className="text-right">
-                    <div className="text-sm text-gray-400 mb-2">Tasks</div>
-                    {tasks && (
-                      <div className="space-y-1">
-                        {tasks.map((task, taskIndex) => (
-                          <div key={taskIndex} className="text-sm text-blue-400 bg-blue-900/20 px-2 py-1 rounded">
-                            {task.name}
-                          </div>
+                    <p
+                      className={`text-sm mt-2 ${
+                        u.online ? "text-green-400" : "text-red-400"
+                      } font-medium`}
+                    >
+                      {u.online ? "Online" : "Offline"}
+                    </p>
+
+                    {/* Tasks for this user */}
+                    <ul className="mt-2 space-y-1 text-xs text-gray-300">
+                      {tasks
+                        ?.filter((t) => t.createdBy === u.uid)
+                        .map((t) => (
+                          <li key={t.id}>{t.name}</li>
                         ))}
-                      </div>
-                    )}
+                    </ul>
                   </div>
-                </div>
-              </div>
-            ))}
+                </Link>
+              ))}
           </div>
-        </div>
+        </section>
+
+        {/* Tasks Section */}
+        <section>
+          <h2 className="text-2xl font-semibold mb-6">All Tasks</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {tasks &&
+              tasks.map((task) => (
+                <Link
+                  key={task.uid}
+                  to={`/task/${task.uid}`}
+                  className="bg-neutral-900 rounded-2xl shadow-xl p-4 hover:bg-neutral-800 transition transform hover:scale-105"
+                >
+                  <h3 className="font-semibold text-lg">{task.name}</h3>
+                  <p className="text-sm text-gray-400">
+                    {task.description || "No description"}
+                  </p>
+                </Link>
+              ))}
+          </div>
+        </section>
       </div>
     </div>
-  )
+  );
 }
+
+
+
+
+

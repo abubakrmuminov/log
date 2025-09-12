@@ -1,29 +1,32 @@
 import { Form, NavLink, useActionData } from "react-router-dom";
-import useLogin from "../hook/useLogin";
 import { useEffect, useState } from "react";
-import { formError } from "../components/ErrorId";
 import { FcGoogle } from "react-icons/fc";
-import { FaAngleDoubleRight, FaGithub } from "react-icons/fa";
-import { useResetPassword } from "../hook/useResetPassword";
+import { FaAngleDoubleRight } from "react-icons/fa";
 
-// 🔥 action shu yerda
+import useLogin from "../hook/useLogin";
+import { useResetPassword } from "../hook/useResetPassword";
+import { useGoogle } from "../hook/useGoogle";
+import { formError } from "../components/ErrorId";
+
+// Обработка данных формы
 export async function action({ request }) {
   const formData = await request.formData();
-  const data = Object.fromEntries(formData);
-  return data;
+  return Object.fromEntries(formData);
 }
 
 export default function Login() {
   const data = useActionData();
+  const [recoveryMode, setRecoveryMode] = useState(false);
+
   const { login, isPending } = useLogin();
   const { resetPassword } = useResetPassword();
-  const [form, setForm] = useState(false);
+  const { googleLogin, _isPending } = useGoogle();
 
   useEffect(() => {
     if (data?.email && data?.password) {
       login(data.email, data.password);
-    } else {
-      data ? formError() : false;
+    } else if (data) {
+      formError();
     }
 
     if (data?.emailRecovery) {
@@ -31,128 +34,104 @@ export default function Login() {
     }
   }, [data]);
 
+  const inputClass =
+    "px-5 py-3 rounded-xl bg-neutral-800 text-white placeholder-gray-400 border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300";
+
+  const buttonClass =
+    "w-full py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all duration-300";
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-dark-900 to-dark-800 flex items-center justify-center p-6">
-      {!form && (
-        <div className="glass rounded-2xl p-8 w-full max-w-md animate-fade-in">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
-            <p className="text-gray-400">Sign in to continue to your account</p>
-          </div>
+    <div className="min-h-screen flex items-center justify-center bg-black px-4">
+      {!recoveryMode ? (
+        <Form
+          method="post"
+          className="w-full max-w-md bg-neutral-900 p-8 rounded-3xl shadow-2xl flex flex-col gap-6"
+        >
+          {/* Header */}
+          <p className="text-center text-gray-300 text-sm mb-4">
+            Welcome back!{" "}
+            <span className="text-white font-semibold">Sign in to your account</span>
+          </p>
 
-          <Form method="post" className="space-y-6">
-            <div>
-              <input 
-                type="email" 
-                placeholder="Email address" 
-                name="email" 
-                className="w-full px-4 py-3 bg-dark-800 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
-              />
-            </div>
-            
-            <div>
-              <input 
-                type="password" 
-                placeholder="Password" 
-                name="password" 
-                className="w-full px-4 py-3 bg-dark-800 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
-              />
-            </div>
+          {/* Inputs */}
+          <input type="email" name="email" placeholder="Email" className={inputClass} />
+          <input type="password" name="password" placeholder="Password" className={inputClass} />
 
-            <div className="flex items-center justify-center">
-              <div className="flex-1 h-px bg-gray-700"></div>
-              <span className="px-4 text-gray-400 text-sm">OR</span>
-              <div className="flex-1 h-px bg-gray-700"></div>
-            </div>
-
+          {/* Forgot / Register */}
+          <div className="flex justify-between items-center text-sm text-gray-400 mb-2">
             <button
               type="button"
-              onClick={() => setForm(!form)}
-              className="w-full text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors duration-300"
+              onClick={() => setRecoveryMode(true)}
+              className="hover:text-white transition-colors"
             >
-              Forgot your password?
+              Forgot password?
             </button>
-
-            <div className="space-y-3">
-              <button 
-                type="button"
-                className="w-full flex items-center justify-center space-x-3 bg-white hover:bg-gray-100 text-gray-900 px-4 py-3 rounded-xl font-medium transition-all duration-300 btn-glow"
-              >
-                <FcGoogle size={20} />
-                <span>Continue with Google</span>
-              </button>
-
-              <button 
-                type="button"
-                className="w-full flex items-center justify-center space-x-3 bg-gray-800 hover:bg-gray-700 text-white px-4 py-3 rounded-xl font-medium transition-all duration-300 btn-glow"
-              >
-                <FaGithub size={20} />
-                <span>Continue with GitHub</span>
-              </button>
-            </div>
-
-            {!isPending ? (
-              <button 
-                type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-xl font-medium btn-glow transition-all duration-300 flex items-center justify-center space-x-2"
-              >
-                <span>Sign In</span>
-                <FaAngleDoubleRight size={16} />
-              </button>
-            ) : (
-              <button 
-                disabled
-                className="w-full bg-gray-600 text-white px-4 py-3 rounded-xl font-medium opacity-50 cursor-not-allowed"
-              >
-                Loading...
-              </button>
-            )}
-          </Form>
-
-          <div className="mt-8 text-center">
-            <p className="text-gray-400">
-              Don't have an account?{' '}
-              <NavLink to="/register" className="text-blue-400 hover:text-blue-300 font-medium transition-colors duration-300">
-                Sign up
-              </NavLink>
-            </p>
-          </div>
-        </div>
-      )}
-
-      {form && (
-        <div className="glass rounded-2xl p-8 w-full max-w-md animate-fade-in">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-white mb-2">Reset Password</h1>
-            <p className="text-gray-400">Enter your email to receive reset instructions</p>
+            <NavLink
+              to="/register"
+              className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-3 py-1 rounded-full shadow-lg hover:scale-105 hover:shadow-xl transition-transform duration-300"
+            >
+              Register
+            </NavLink>
           </div>
 
-          <Form method="post" className="space-y-6">
-            <div>
-              <input 
-                type="email" 
-                placeholder="Email address" 
-                name="emailRecovery" 
-                className="w-full px-4 py-3 bg-dark-800 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
-              />
-            </div>
-            
-            <button 
-              type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-xl font-medium btn-glow transition-all duration-300"
-            >
-              Send Reset Link
-            </button>
-            
-            <button
-              type="button"
-              onClick={() => setForm(!form)}
-              className="w-full text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors duration-300"
-            >
-              Back to Sign In
-            </button>
-          </Form>
-        </div>
+          {/* Continue Button */}
+          <button
+            type="submit"
+            className={`${buttonClass} bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:scale-105 hover:shadow-lg`}
+          >
+            {isPending ? "Signing in..." : "Continue"}
+            <FaAngleDoubleRight size={20} />
+          </button>
+
+          {/* Or Separator */}
+          <div className="flex items-center gap-3 my-4">
+            <div className="flex-1 h-px bg-neutral-700"></div>
+            <span className="text-gray-400 text-xs uppercase">or</span>
+            <div className="flex-1 h-px bg-neutral-700"></div>
+          </div>
+
+          {/* Google Login */}
+          <button
+            onClick={googleLogin}
+            disabled={_isPending}
+            className={`${buttonClass} bg-white text-black hover:bg-gray-200 shadow-md hover:shadow-lg`}
+          >
+            {_isPending ? "Loading..." : "Sign in with Google"}
+            <FcGoogle size={22} />
+          </button>
+        </Form>
+      ) : (
+        // Password Recovery
+        <Form
+          method="post"
+          className="w-full max-w-md bg-neutral-900 p-8 rounded-3xl shadow-2xl flex flex-col gap-4"
+        >
+          <p className="text-center text-gray-300 text-sm mb-4">
+            Password Recovery
+          </p>
+
+          <input
+            type="email"
+            placeholder="Enter your email"
+            name="emailRecovery"
+            className={inputClass}
+          />
+
+          <button
+            type="submit"
+            className={`${buttonClass} bg-blue-600 text-white hover:bg-blue-500`}
+          >
+            Send Recovery Link
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setRecoveryMode(false)}
+            className={`${buttonClass} bg-neutral-800 text-gray-300 hover:bg-neutral-700 hover:text-white`}
+          >
+            Back to Login
+          </button>
+        </Form>
       )}
     </div>
   );
